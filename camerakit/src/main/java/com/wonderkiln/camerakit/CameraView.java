@@ -19,26 +19,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.hardware.display.DisplayManagerCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
-import android.view.Display;
-import android.view.MotionEvent;
-import android.view.Surface;
-import android.view.View;
-import android.view.WindowManager;
+import android.view.*;
 import android.widget.FrameLayout;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.wonderkiln.camerakit.CameraKit.Constants.FACING_BACK;
-import static com.wonderkiln.camerakit.CameraKit.Constants.FACING_FRONT;
-import static com.wonderkiln.camerakit.CameraKit.Constants.FLASH_AUTO;
-import static com.wonderkiln.camerakit.CameraKit.Constants.FLASH_OFF;
-import static com.wonderkiln.camerakit.CameraKit.Constants.FLASH_ON;
-import static com.wonderkiln.camerakit.CameraKit.Constants.FLASH_TORCH;
-import static com.wonderkiln.camerakit.CameraKit.Constants.PERMISSIONS_LAZY;
-import static com.wonderkiln.camerakit.CameraKit.Constants.PERMISSIONS_PICTURE;
-import static com.wonderkiln.camerakit.CameraKit.Constants.PERMISSIONS_STRICT;
+import static com.wonderkiln.camerakit.CameraKit.Constants.*;
 
 public class CameraView extends FrameLayout implements LifecycleObserver {
 
@@ -364,6 +352,10 @@ public class CameraView extends FrameLayout implements LifecycleObserver {
     public void setZoom(@Zoom int zoom) {
         this.mZoom = zoom;
         mCameraImpl.setZoom(mZoom);
+    }
+
+    public void setScaleZoom(float scaleFactor) {
+        mCameraImpl.setScaleZoom(scaleFactor);
     }
 
     public void setPermissions(@Permissions int permissions) {

@@ -256,6 +256,52 @@ public class Camera1 extends CameraImpl {
     }
 
     @Override
+    void setScaleZoom(float scaleFactor) {
+        if (mCamera != null) {
+            mCamera.cancelAutoFocus();
+
+            if (mCameraParameters != null) {
+                if (mCameraParameters.isZoomSupported()) {
+                    List<Integer> zoomRatios = mCameraParameters.getZoomRatios();
+                    float zoomRatio = zoomRatios.get(mCameraParameters.getZoom()) / 100.0f;
+                    zoomRatio *= scaleFactor;
+
+                    int zoomFactor = mCameraParameters.getZoom();
+                    if (zoomRatio <= 1.0f) {
+                        zoomFactor = 0;
+                    } else if (zoomRatio >= zoomRatios.get(mCameraParameters.getMaxZoom()) / 100.0f) {
+                        zoomFactor = mCameraParameters.getMaxZoom();
+                    } else {
+                        if (scaleFactor > 1.0f) {
+                            for (int i = mCameraParameters.getZoom(); i < zoomRatios.size(); i++) {
+                                if (zoomRatios.get(i) / 100.0f >= zoomRatio) {
+                                    zoomFactor = i;
+                                    break;
+                                }
+                            }
+                        } else {
+                            for (int i = mCameraParameters.getZoom(); i >= 0; i--) {
+                                if (zoomRatios.get(i) / 100.0f <= zoomRatio) {
+                                    zoomFactor = i;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (zoomFactor < 0) {
+                        zoomFactor = 0;
+                    } else if (zoomFactor > mCameraParameters.getMaxZoom()) {
+                        zoomFactor = mCameraParameters.getMaxZoom();
+                    }
+
+                    setZoom(zoomFactor);
+                }
+            }
+        }
+    }
+
+    @Override
     void setVideoQuality(int videoQuality) {
         this.mVideoQuality = videoQuality;
     }
