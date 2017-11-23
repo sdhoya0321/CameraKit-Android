@@ -252,7 +252,12 @@ public class Camera1 extends CameraImpl {
 
     @Override
     void setZoom(@Zoom int zoom) {
-        this.mZoom = zoom;
+        if (mCameraParameters != null) {
+            if (mCameraParameters.isZoomSupported()) {
+                mCameraParameters.setZoom(zoom);
+                mCamera.setParameters(mCameraParameters);
+            }
+        }
     }
 
     @Override
